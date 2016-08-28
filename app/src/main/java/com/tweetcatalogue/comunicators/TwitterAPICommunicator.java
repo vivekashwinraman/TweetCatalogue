@@ -48,19 +48,24 @@ public class TwitterAPICommunicator {
         return Observable.create(new Observable.OnSubscribe<QueryResult>() {
             @Override
             public void call(Subscriber<? super QueryResult> subscriber) {
-                subscriber.onNext(getTweetResult(query));
-                subscriber.onCompleted();
+
+                try {
+                    QueryResult queryResult = getTweetResult(query);
+                    subscriber.onNext(queryResult);
+                    subscriber.onCompleted();
+                }
+                catch (Exception e){
+                    subscriber.onError(e);
+                }
+
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
-    private QueryResult getTweetResult(Query query) {
-        try {
+    private QueryResult getTweetResult(Query query) throws Exception {
+
             return  twitter.search(query);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+
     }
 }

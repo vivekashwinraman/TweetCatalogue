@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        tweetAdapter.destroyDialog();
         subscription.unsubscribe();
     }
 
@@ -120,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String queryValue) {
                 searchText = queryValue;
                 tweetObjects.clear();
+                tweetAdapter.notifyDataSetChanged();
                 query = new Query(queryValue);
                 query.setCount(20);
                 fetchTweets();

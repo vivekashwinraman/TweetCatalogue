@@ -24,6 +24,7 @@ import java.util.List;
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
     private List<TweetObject> tweetObjectList;
     private Context context;
+    private CustomDialog customDialog;
 
     public TweetAdapter(List<TweetObject> tweetObjectList, Context context) {
         this.tweetObjectList = tweetObjectList;
@@ -64,18 +65,18 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tweetText = (TextView) itemLayoutView.findViewById(R.id.tweetText);
             userName = (TextView) itemLayoutView.findViewById(R.id.tweetUsername);
             profileImageView = (ImageView) itemLayoutView.findViewById(R.id.profileImage);
-            userURL = (TextView)itemLayoutView.findViewById(R.id.userUrl);
+            userURL = (TextView) itemLayoutView.findViewById(R.id.userUrl);
             itemLayoutView.setOnClickListener(this);
 
         }
 
         @Override
         public void onClick(View view) {
-            final CustomDialog customDialog = new CustomDialog(context, R.layout.dialog_tweet_detail, context.getString(R.string.app_name));
-            TextView userNameText = (TextView)customDialog.findViewById(R.id.tweetUsername);
-            TextView tweetStatus = (TextView)customDialog.findViewById(R.id.tweetText);
-            ImageView profileImage = (ImageView)customDialog.findViewById(R.id.profileImage);
-            String userUrl = "<a href="+userURL.getText()+">";
+            customDialog = new CustomDialog(context, R.layout.dialog_tweet_detail, context.getString(R.string.app_name));
+            TextView userNameText = (TextView) customDialog.findViewById(R.id.tweetUsername);
+            TextView tweetStatus = (TextView) customDialog.findViewById(R.id.tweetText);
+            ImageView profileImage = (ImageView) customDialog.findViewById(R.id.profileImage);
+            String userUrl = "<a href=" + userURL.getText() + ">";
             userNameText.setText(Html.fromHtml(userUrl + userName.getText().toString()));
             userNameText.setMovementMethod(LinkMovementMethod.getInstance());
             tweetStatus.setText(tweetText.getText());
@@ -95,4 +96,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     public int getItemCount() {
         return tweetObjectList.size();
     }
+
+    public void destroyDialog() {
+        if (customDialog != null) {
+            if (customDialog.isShowing()) {
+                customDialog.dismiss();
+            }
+            customDialog = null;
+        }
+    }
+
 }
