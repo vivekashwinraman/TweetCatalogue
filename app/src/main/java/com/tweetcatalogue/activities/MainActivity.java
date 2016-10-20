@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         tweetRecyclerView.setLayoutManager(layoutManager);
 
         if (savedInstanceState != null) {
-            this.tweetObjects = (ArrayList<TweetObject>) savedInstanceState.getSerializable(TWEETS_TAG);
+            this.tweetObjects = savedInstanceState.getParcelableArrayList(TWEETS_TAG);
             this.query = (Query) savedInstanceState.getSerializable(QUERY_TAG);
             this.searchText = savedInstanceState.getString(SEARCH_TAG);
         } else {
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putSerializable(QUERY_TAG, this.query);
-        savedInstanceState.putSerializable(TWEETS_TAG, this.tweetObjects);
+        savedInstanceState.putParcelableArrayList(TWEETS_TAG, this.tweetObjects);
         savedInstanceState.putString(SEARCH_TAG, searchText);
         super.onSaveInstanceState(savedInstanceState);
     }
